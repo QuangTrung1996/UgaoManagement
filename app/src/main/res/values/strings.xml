@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">Ugao</string>
+    <string name="search_hint">Tìm kiếm</string>
+
+    <!--activity main-->
+    <string name="title_invoice">Hóa đơn</string>
+    <string name="title_shipper">Người giao hàng</string>
+    <string name="title_product">Kho hàng</string>
+    <string name="title_person">Tài khoản</string>
+
+    <!--invoice-->
+    <string name="title_activity_invoice_detail">Chi tiết hóa đơn</string>
+    <string name="invoice_total_money">Tổng tiền :</string>
+    <string name="action_search">Tìm kiếm</string>
+
+    <!--invoice detail-->
+    <string name="id_invoice_detail">Mã hóa đơn</string>
+    <string name="date_invoice_detail">Ngày đặt hàng</string>
+    <string name="price_invoice_detail">Tổng tiền</string>
+    <string name="paid_invoice_detail">Thanh toán</string>
+    <string name="shipper_invoice_detail">Người giao hàng  </string>
+    <string name="customer_invoice_detail">Khách hàng</string>
+    <string name="hang_hoa">HÀNG HÓA</string>
+    <string name="thong_tin_don_hang">THÔNG TIN ĐƠN HÀNG</string>
+
+    <!--item shipper-->
+    <string name="shipper_name">Tên</string>
+    <string name="shipper_email">Email</string>
+    <string name="shipper_phone">SĐT</string>
+    <string name="title_activity_login">Đăng nhập</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_username">Username</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Đăng nhập</string>
+    <string name="error_invalid_username">Username không hợp lệ</string>
+    <string name="error_invalid_password">Mật khẩu không hợp lệ</string>
+    <string name="error_incorrect_password">Mật khẩu này không chính xác</string>
+    <string name="error_required">Bắt buộc</string>
+
+    <!--Cloud Messaging-->
+    <string name="notification_add_to_cart_button">Like</string>
+    <string name="group_name">Group 1</string>
+    <string name="notifications_admin_channel_name">Global channel</string>
+    <string name="notifications_admin_channel_description">Notifications sent from the app admin</string>
+
+</resources>

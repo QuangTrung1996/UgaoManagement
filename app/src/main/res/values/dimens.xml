@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!--item product-->
+    <dimen name="card_margin">5dp</dimen>
+    <dimen name="card_product">0dp</dimen>
+    <dimen name="product_cover_height">130dp</dimen>
+    <dimen name="product_title_padding">8dp</dimen>
+    <dimen name="product_title">14sp</dimen>
+</resources>

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "130130376582",
+    "firebase_url": "https://ugao-cc2a4.firebaseio.com",
+    "project_id": "ugao-cc2a4",
+    "storage_bucket": "ugao-cc2a4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:130130376582:android:e1f6e4b4c9c4c45b",
+        "android_client_info": {
+          "package_name": "com.ugao.ugaomanagement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "130130376582-8d3idnqkgjhh6sk9a0pfftlml5rcvjlk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ugao.ugaomanagement",
+            "certificate_hash": "7d9be9abcacbbe84398355188812d4b991e661e7"
+          }
+        },
+        {
+          "client_id": "130130376582-de2v33jsqqdfkqtrrepnr4haohgutlbo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOKIjS0GNYEYpq26kN6gaoDD_vhsqPyHA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "130130376582-de2v33jsqqdfkqtrrepnr4haohgutlbo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
