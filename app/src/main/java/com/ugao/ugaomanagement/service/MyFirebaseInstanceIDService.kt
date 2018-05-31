@@ -8,6 +8,7 @@ import com.google.firebase.iid.FirebaseInstanceIdService
 class MyFirebaseInstanceIDService : FirebaseInstanceIdService() {
 
     val FIREBASE_TOKEN = "firebase token"
+    private val TAG = "MyFirebaseIIDService"
 
     override fun onTokenRefresh() {
         // Get updated InstanceID token.
@@ -18,9 +19,5 @@ class MyFirebaseInstanceIDService : FirebaseInstanceIdService() {
         // Instance ID token to your app server.
         val preferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         preferences.edit().putString(FIREBASE_TOKEN, refreshedToken).apply()
-    }
-
-    companion object {
-        private val TAG = "MyFirebaseIIDService"
     }
 }

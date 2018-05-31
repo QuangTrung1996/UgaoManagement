@@ -2,6 +2,7 @@ package com.ugao.ugaomanagement.activity
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import com.ugao.ugaomanagement.R
@@ -13,7 +14,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var navigation : BottomNavigationView
 
     var toolbar: Toolbar? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,5 +68,26 @@ class MainActivity : AppCompatActivity() {
             }
         }
         false
+    }
+
+    override fun onBackPressed() {
+
+        val builder = AlertDialog.Builder(this)
+        builder.setCancelable(false)
+        builder.setIcon(R.drawable.logo)
+        builder.setTitle("Đặc biệt")
+        builder.setMessage("Bạn có muốn thoát ứng dụng không?")
+        builder.setPositiveButton("OK") { _, _ ->
+            //if user pressed "OK", then he is allowed to exit from application
+            finish()
+        }
+        builder.setNegativeButton("Hủy") { dialog, _ ->
+            //if user select "Hủy", just cancel this dialog and continue with app
+            dialog.cancel()
+        }
+
+        val dialog = builder.create()
+        dialog.window.attributes.windowAnimations = R.style.DialogTheme
+        dialog.show()
     }
 }

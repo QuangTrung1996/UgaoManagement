@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.ugao.ugaomanagement.activity
 
 import android.annotation.SuppressLint
@@ -24,6 +22,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
+import org.json.JSONException
 
 class InvoiceDetailActivity : AppCompatActivity() {
 
@@ -175,8 +174,14 @@ class InvoiceDetailActivity : AppCompatActivity() {
             }
 
             // Lấy nút JSON Object shipper
-            val shipper = invoice.getJSONObject("shipper")
-            txtShipper.text = " " + shipper.getString("name")
+            try {
+                val shipper = invoice.getJSONObject("shipper")
+                txtShipper.text = shipper.getString("name")
+            } catch (e: JSONException) {
+                e.printStackTrace()
+                txtShipper.text = "Chưa có người nhận"
+                txtShipper.setTextColor(Color.parseColor("#FFFF000D"))
+            }
 
             // Lấy nút JSON Object customer
             val customer = invoice.getJSONObject("customer")

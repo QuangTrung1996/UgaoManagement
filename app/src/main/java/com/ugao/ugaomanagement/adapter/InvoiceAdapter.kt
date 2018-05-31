@@ -69,7 +69,7 @@ class InvoiceAdapter : BaseAdapter {
         val date = df.parse(invoice.order_date)
         holder.txt_order_date.text = df1.format(date)
 
-        holder.txt_price.text = invoice.price.toString() + " Đ"
+        holder.txt_price.text = invoice.price + " Đ"
 
         return view
     }

@@ -4,6 +4,6 @@ class Invoice {
     var id: String = ""
     var order_date: String = ""
     var paid: Boolean = false
-    var price: Int = 0
+    var price: String = ""
     var payment_method: String = ""
 }

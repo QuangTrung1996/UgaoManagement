@@ -3,7 +3,6 @@ package com.ugao.ugaomanagement.fragment
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.app.ProgressDialog.STYLE_SPINNER
-import android.app.SearchManager
 import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle
@@ -13,7 +12,6 @@ import android.widget.ListView
 import android.widget.Toast
 import com.ugao.ugaomanagement.R
 import com.ugao.ugaomanagement.adapter.InvoiceAdapter
-import com.ugao.ugaomanagement.model.Invoice
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.Reader
@@ -23,16 +21,17 @@ import org.json.JSONException
 import org.json.JSONObject
 import android.content.Intent
 import android.content.SharedPreferences
-import android.support.v7.widget.SearchView
-import android.support.v7.widget.Toolbar
 import android.view.*
 import android.widget.AdapterView.OnItemClickListener
 import com.ugao.ugaomanagement.activity.InvoiceDetailActivity
-import com.ugao.ugaomanagement.activity.MainActivity
+import com.ugao.ugaomanagement.model.Invoice
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class InvoiceFragment : Fragment() {
 
-//    private lateinit var searchView: SearchView
+    //    private lateinit var searchView: SearchView
     private val TAG: String = InvoiceFragment::class.java.simpleName
     private var httpInvoiceAsyncTask: HttpInvoiceAsyncTask? = null
     val invoiceList = ArrayList<Invoice>()
@@ -147,10 +146,22 @@ class InvoiceFragment : Fragment() {
                     invoice.id = c.getString("_id")
                     invoice.order_date = c.getString("order_date")
                     invoice.paid = c.getString("paid")!!.toBoolean()
-                    invoice.price = c.getString("price").toInt()
+                    invoice.price = c.getString("price")
                     invoice.payment_method = c.getString("payment_method")
 
-                    invoiceList.add(invoice)
+                    if(invoiceList.size == 0){
+                        //1st item, add it on loc=0
+                        invoiceList.add(invoice)
+                    }else{
+                        val time = getTimeLong(invoice.order_date)
+                        if(time > getTimeLong(invoiceList[invoiceList.size-1].order_date)){
+                            invoiceList.add(0,invoice)
+                        }else{
+                            invoiceList.add(invoice)
+                        }
+                    }
+
+//                    invoiceList.add(invoice)
                 }
             }
             catch (e: JSONException) {
@@ -170,11 +181,19 @@ class InvoiceFragment : Fragment() {
         }
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        super.onCreateOptionsMenu(menu, inflater)
-//        inflater.inflate(R.menu.menu_main, menu)
-//
-//
-//    }
+    private fun getTimeLong(dateTime: String): Long {
+        if(dateTime.trim() == ""){
+            return -1
+        }
 
+        try {
+            val df = SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss z", Locale.US)
+            df.timeZone = TimeZone.getTimeZone("GMT+0000 (UTC)")
+            val date = df.parse(dateTime)
+            return date.time
+        } catch (e: ParseException) {
+            e.printStackTrace()
+            return -1;
+        }
+    }
 }
