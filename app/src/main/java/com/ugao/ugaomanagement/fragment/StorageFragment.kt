@@ -15,6 +15,8 @@ import android.view.ViewGroup
 import android.widget.ListView
 import com.ugao.ugaomanagement.R
 import com.ugao.ugaomanagement.adapter.StorageAdapter
+import com.ugao.ugaomanagement.app.Config.myPreference
+import com.ugao.ugaomanagement.app.Config.storeKey
 import com.ugao.ugaomanagement.model.Storage
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -31,8 +33,6 @@ class StorageFragment : Fragment() {
     private var httpStorageAsyncTask: HttpStorageAsyncTask? = null
 
     lateinit var sharedPreferences: SharedPreferences
-    val myPreference = "myPref"
-    val idKey = "idKey"
 
     var https = "https://gentle-dawn-11577.herokuapp.com/graphql?query={store(id:%22"
     var query = "%22){storage{amount,receipt_date,product {_id,name,img,price,weight}}}}"
@@ -44,7 +44,7 @@ class StorageFragment : Fragment() {
         listView = v.findViewById(R.id.list_storage_product)
 
         httpStorageAsyncTask = HttpStorageAsyncTask()
-        httpStorageAsyncTask!!.execute(https + sharedPreferences.getString(idKey, "") + query)
+        httpStorageAsyncTask!!.execute(https + sharedPreferences.getString(storeKey, "") + query)
 
         return v
     }

@@ -15,6 +15,8 @@ import android.widget.ListView
 import android.widget.Toast
 import com.ugao.ugaomanagement.R
 import com.ugao.ugaomanagement.adapter.ShipperAdapter
+import com.ugao.ugaomanagement.app.Config.myPreference
+import com.ugao.ugaomanagement.app.Config.storeKey
 import com.ugao.ugaomanagement.model.Shipper
 import org.json.JSONException
 import org.json.JSONObject
@@ -30,9 +32,7 @@ class ShipperFragment  : Fragment() {
     private var httpShipperAsyncTask: HttpShipperAsyncTask? = null
     val shipperList = ArrayList<Shipper>()
 
-    lateinit var sharedPreferences: SharedPreferences
-    val myPreference = "myPref"
-    val idKey = "idKey"
+    private lateinit var sharedPreferences: SharedPreferences
 
     var https = "https://gentle-dawn-11577.herokuapp.com/graphql?query={store(id:%22"
     var query = "%22){shippers {_id,name,phone,email,img}}}"
@@ -45,7 +45,7 @@ class ShipperFragment  : Fragment() {
         sharedPreferences = activity!!.getSharedPreferences(myPreference, Context.MODE_PRIVATE)
 
         httpShipperAsyncTask = HttpShipperAsyncTask()
-        httpShipperAsyncTask!!.execute(https + sharedPreferences.getString(idKey, "") + query)
+        httpShipperAsyncTask!!.execute(https + sharedPreferences.getString(storeKey, "") + query)
         return v
     }
 

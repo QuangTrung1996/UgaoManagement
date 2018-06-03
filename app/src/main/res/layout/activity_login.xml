@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradientbackground">
@@ -36,43 +37,58 @@
             android:background="@drawable/logo"
             android:tint="@android:color/white" />
 
-        <EditText
-            android:id="@+id/username"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:background="#1b3ad8"
-            android:drawableLeft="@drawable/ic_person"
-            android:drawablePadding="16dp"
-            android:drawableTint="@android:color/white"
             android:hint="Username"
-            android:padding="10dp"
-            android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white" />
+            android:background="#3761f7"
+            android:layout_marginTop="40dp">
 
-        <EditText
-            android:id="@+id/password"
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_person"
+                android:drawablePadding="16dp"
+                android:drawableTint="@android:color/white"
+                android:padding="10dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white"
+                android:text="Jana75@gmail.com"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="#1b2bd8"
-            android:drawableLeft="@drawable/ic_lock"
-            android:drawablePadding="16dp"
-            android:drawableTint="@android:color/white"
             android:hint="Password"
-            android:inputType="textPassword"
-            android:padding="10dp"
-            android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white" />
+            android:background="#3761f7"
+            android:layout_marginTop="5dp">
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:drawableLeft="@drawable/ic_lock"
+                android:drawablePadding="16dp"
+                android:drawableTint="@android:color/white"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white"
+                android:text="kltnugao"/>
+        </android.support.design.widget.TextInputLayout>
 
         <Button
             android:id="@+id/sign_in_button"
-            android:layout_width="match_parent"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:background="#93add8"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:background="@android:color/holo_blue_light"
             android:text="Sign In"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            tools:ignore="RtlHardcoded" />
 
         <LinearLayout
             android:layout_width="match_parent"

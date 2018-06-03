@@ -19,11 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyTheme">
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/logo" />
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
@@ -38,16 +36,21 @@
 
         <activity
             android:name=".activity.InvoiceDetailActivity"
-            android:label="@string/title_activity_invoice_detail"/>
-
+            android:label="@string/title_activity_invoice_detail" />
         <activity android:name=".activity.MainActivity" />
 
         <activity
             android:name=".activity.LoginActivity"
-            android:label="@string/title_activity_login" />
+            android:label="@string/title_activity_login"/>
 
-        <activity android:name=".activity.NotificationActivity"
-            android:label="@string/title_activity_notification" />
+        <activity
+            android:name=".activity.NotificationActivity"
+            android:label="@string/title_activity_notification" >
+            <intent-filter>
+                <action android:name="OPEN_ACTIVITY_1" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <!-- Firebase Notifications -->
         <service android:name=".service.MyFirebaseMessagingService">

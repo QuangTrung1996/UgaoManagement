@@ -17,21 +17,33 @@ import com.ugao.ugaomanagement.R
 import kotlinx.android.synthetic.main.activity_login.*
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.util.Log
+import android.widget.Toast
+import com.ugao.ugaomanagement.app.Config.myPreference
+import com.ugao.ugaomanagement.app.Config.ownerEmail
+import com.ugao.ugaomanagement.app.Config.ownerId
+import com.ugao.ugaomanagement.app.Config.ownerImg
+import com.ugao.ugaomanagement.app.Config.ownerName
+import com.ugao.ugaomanagement.app.Config.ownerPhone
+import com.ugao.ugaomanagement.app.Config.storeKey
+import com.ugao.ugaomanagement.app.Config.storeLocation
+import com.ugao.ugaomanagement.app.Config.storeName
+import org.json.JSONException
+import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.io.Reader
+import java.net.HttpURLConnection
+import java.net.URL
 
 class LoginActivity : AppCompatActivity() {
 
     private var mAuthTask: UserLoginTask? = null
 
     lateinit var sharedPreferences: SharedPreferences
-    val myPreference = "myPref"
-    val idKey = "idKey"
-    val nameKey = "nameKey"
-    val emailKey = "emailKey"
-    val phoneKey = "phoneKey"
-    val storeKey = "storeKey"
-    val locationKey = "locationKey"
-    val moneyKey = "moneyKey"
-    val imgKey = "imgKey"
+
+    val https = "https://gentle-dawn-11577.herokuapp.com/graphql?query={"
+    val query = "{_id, email, name, phone, img, store {_id, name, location {address}}}}"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,10 +102,15 @@ class LoginActivity : AppCompatActivity() {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true)
-            mAuthTask = UserLoginTask(usernameStr, passwordStr)
-            mAuthTask!!.execute(null as Void?)
+            mAuthTask = UserLoginTask()
+            mAuthTask!!.execute(https + authenticatedOwner(usernameStr,passwordStr) + query)
         }
     }
+
+    private fun authenticatedOwner(usernameStr: String, passwordStr: String): String? {
+        return "authenticatedOwner(email:%22" + usernameStr + "%22,pass:%22" +passwordStr + "%22)"
+    }
+
 
     private fun isUsernameValid(usernameStr: String): Boolean {
         return usernameStr.length > 4
@@ -142,8 +159,7 @@ class LoginActivity : AppCompatActivity() {
 
     // kiem tra tai khoan dang nhap
     @SuppressLint("StaticFieldLeak")
-    inner class UserLoginTask internal constructor(private val mEmail: String, private val mPassword: String) :
-            AsyncTask<Void, Void, Boolean>() {
+    inner class UserLoginTask : AsyncTask<String, String, String>() {
 
         private var intent: Intent? = null
 
@@ -152,43 +168,66 @@ class LoginActivity : AppCompatActivity() {
             intent = Intent(this@LoginActivity, MainActivity::class.java)
         }
 
-        override fun doInBackground(vararg params: Void): Boolean? {
-
-//            chua co j
+        override fun doInBackground(vararg params: String?): String {
+            val content = StringBuffer()
+            val url = URL(params[0])
+            val urlConnection: HttpURLConnection =url.openConnection()as HttpURLConnection
+            val inputStreamReader = InputStreamReader(urlConnection.inputStream)
+            val bufferReader = BufferedReader(inputStreamReader as Reader?)
+            var line : String
             try {
-                // Simulate network access.
-                Thread.sleep(2000)
-            } catch (e: InterruptedException) {
-                return false
+                do {
+                    line=bufferReader.readLine()
+                    if (line!=null){
+                        content.append(line)
+                    }
+
+                }while (line != null)
+                bufferReader.close()
+
+            }catch (e:Exception){
+                Log.d("AAA",e.toString())
             }
 
-            return true
+            return content.toString()
         }
 
-        override fun onPostExecute(success: Boolean?) {
+        //Hàm này được thực hiện khi tiến trình kết thúc
+        override fun onPostExecute(result: String?) {
             mAuthTask = null
             showProgress(false)
 
-            if (success!!) {
+            try {
+                val jsonObj = JSONObject(result)
+                val jsonData = jsonObj.getJSONObject("data")
+                val owner = jsonData.getJSONObject("authenticatedOwner")
+                val store = owner.getJSONObject("store")
+                val location = store.getJSONObject("location")
+
 
                 sharedPreferences = getSharedPreferences(myPreference, Context.MODE_PRIVATE)
                 val editor = sharedPreferences.edit()
-                editor.putString(idKey, "5ac8d41fd9552734e8148e19")
-                editor.putString(nameKey, "Blanca Bechtelar")
-                editor.putString(emailKey, "Jana75@gmail.com")
-                editor.putString(phoneKey, "1234567890")
-                editor.putString(locationKey, "7999 Lord Lights")
-                editor.putString(storeKey, "Ugao Store 1")
-                editor.putString(moneyKey, "100.000Đ")
-                editor.putString(imgKey, "https://s3.amazonaws.com/uifaces/faces/twitter/joshuasortino/128.jpg")
+                editor.putString(ownerId, owner.getString("_id"))
+                editor.putString(ownerEmail, owner.getString("email"))
+                editor.putString(ownerName, owner.getString("name"))
+                editor.putString(ownerPhone, owner.getString("phone"))
+                editor.putString(ownerImg, owner.getString("img"))
+
+                editor.putString(storeName, store.getString("name"))
+                editor.putString(storeKey, store.getString("_id"))
+                editor.putString(storeLocation, location.getString("address"))
                 editor.apply()
+
+                Toast.makeText(this@LoginActivity, store.getString("_id"), Toast.LENGTH_LONG).show()
 
                 startActivity(intent)
                 finish()
             }
-            else {
-                password.error = getString(R.string.error_incorrect_password)
-                password.requestFocus()
+            catch (e: JSONException) {
+                Toast.makeText(this@LoginActivity,
+                        "Json parsing error: " + e.message,
+                        Toast.LENGTH_LONG)
+                        .show()
             }
         }
 

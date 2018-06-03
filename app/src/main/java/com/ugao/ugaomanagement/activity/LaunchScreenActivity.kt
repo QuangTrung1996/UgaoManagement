@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.google.firebase.messaging.FirebaseMessaging
 import com.ugao.ugaomanagement.R
+import com.ugao.ugaomanagement.app.Config.myPreference
+import com.ugao.ugaomanagement.app.Config.ownerId
 
 @Suppress("DEPRECATION")
 class LaunchScreenActivity : AppCompatActivity() {
@@ -17,8 +19,6 @@ class LaunchScreenActivity : AppCompatActivity() {
     private val SPLASH_TIME : Long = 3000
 
     lateinit var sharedPreferences: SharedPreferences
-    val myPreference = "myPref"
-    val idKey = "idKey"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +31,6 @@ class LaunchScreenActivity : AppCompatActivity() {
         setContentView(R.layout.activity_launch_screen)
 
         BackgroundTask().execute()
-
-        FirebaseMessaging.getInstance().subscribeToTopic("store_owner")
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -45,7 +43,7 @@ class LaunchScreenActivity : AppCompatActivity() {
 
             sharedPreferences = getSharedPreferences(myPreference, Context.MODE_PRIVATE)
 
-            intent = if (sharedPreferences.getString(idKey, "") != ""){
+            intent = if (sharedPreferences.getString(ownerId, "") != ""){
                 Intent(this@LaunchScreenActivity, MainActivity::class.java)
             } else{
                 Intent(this@LaunchScreenActivity, LoginActivity::class.java)

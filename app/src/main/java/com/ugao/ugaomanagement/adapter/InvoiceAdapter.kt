@@ -3,6 +3,7 @@ package com.ugao.ugaomanagement.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
@@ -17,6 +18,10 @@ class InvoiceAdapter : BaseAdapter {
 
     private var listData: List<Invoice>
     private var context: Context
+
+    // doi lai thoi gian
+    val df = SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss z", Locale.US)
+    val df1 = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.US)
 
     constructor(context: Context, listData: List<Invoice>) : super() {
         this.listData = listData
@@ -62,14 +67,11 @@ class InvoiceAdapter : BaseAdapter {
             holder.txt_paid.setTextColor(Color.parseColor("#FFFF000D"))
         }
 
-        // doi lai thoi gian
-        val df = SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss z", Locale.US)
-        val df1 = SimpleDateFormat("HH:mm:ss   dd-MM-yyyy", Locale.US)
         df.timeZone = TimeZone.getTimeZone("GMT+0000 (UTC)")
         val date = df.parse(invoice.order_date)
-        holder.txt_order_date.text = df1.format(date)
+        holder.txt_order_date.text = testTime(date)
 
-        holder.txt_price.text = invoice.price + " Đ"
+        holder.txt_price.text = invoice.price + ".000 Đ"
 
         return view
     }
@@ -79,5 +81,31 @@ class InvoiceAdapter : BaseAdapter {
         var txt_paid: TextView = view.findViewById(R.id.txt_paid)
         var txt_order_date: TextView = view.findViewById(R.id.txt_order_date)
         var txt_price: TextView = view.findViewById(R.id.txt_price)
+    }
+
+    private fun testTime(date : Date) : String{
+        val curDate = Date()
+        val number = curDate.time.toInt() - date.time.toInt()
+
+        val s = 1000
+        val m = 60 * s
+        val h = 60 * m
+        val d = 24 * h
+
+        return when {
+            number / d in 1..7 -> {
+                " " + number / d + " ngày trước"
+            }
+            number / h >= 1 -> {
+                " " +number / d + " giờ trước"
+            }
+            number / m >= 1 -> {
+                " " +number / d + " phút trước"
+            }
+            number / s >= 1 -> {
+                " " +number / d + " giây trước"
+            }
+            else -> df1.format(date)
+        }
     }
 }

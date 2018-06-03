@@ -5,6 +5,7 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import com.google.firebase.messaging.FirebaseMessaging
 import com.ugao.ugaomanagement.R
 import com.ugao.ugaomanagement.fragment.*
 
@@ -78,6 +79,7 @@ class MainActivity : AppCompatActivity() {
         builder.setTitle("Đặc biệt")
         builder.setMessage("Bạn có muốn thoát ứng dụng không?")
         builder.setPositiveButton("OK") { _, _ ->
+
             //if user pressed "OK", then he is allowed to exit from application
             finish()
         }

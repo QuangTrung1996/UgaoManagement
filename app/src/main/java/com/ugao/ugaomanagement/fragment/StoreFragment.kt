@@ -15,20 +15,18 @@ import de.hdodenhof.circleimageview.CircleImageView
 import android.R.id.edit
 import android.content.Intent
 import com.ugao.ugaomanagement.activity.LoginActivity
+import com.ugao.ugaomanagement.app.Config.myPreference
+import com.ugao.ugaomanagement.app.Config.ownerEmail
+import com.ugao.ugaomanagement.app.Config.ownerImg
+import com.ugao.ugaomanagement.app.Config.ownerName
+import com.ugao.ugaomanagement.app.Config.ownerPhone
+import com.ugao.ugaomanagement.app.Config.storeLocation
+import com.ugao.ugaomanagement.app.Config.storeName
 
 
 class StoreFragment: Fragment() {
 
     lateinit var sharedPreferences: SharedPreferences
-    val myPreference = "myPref"
-    val idKey = "idKey"
-    val nameKey = "nameKey"
-    val emailKey = "emailKey"
-    val phoneKey = "phoneKey"
-    val storeKey = "storeKey"
-    val locationKey = "locationKey"
-    val moneyKey = "moneyKey"
-    val imgKey = "imgKey"
 
     lateinit var imgCircleImageView : CircleImageView
     lateinit var nameOwner : TextView
@@ -77,16 +75,16 @@ class StoreFragment: Fragment() {
     private fun getTextSharedPreferences() {
         sharedPreferences = activity!!.getSharedPreferences(myPreference, Context.MODE_PRIVATE)
 
-        nameOwner.text = sharedPreferences.getString(nameKey, "")
-        emailOwner.text = sharedPreferences.getString(emailKey, "")
-        phoneOwner.text = sharedPreferences.getString(phoneKey, "")
+        nameOwner.text = sharedPreferences.getString(ownerName, "")
+        emailOwner.text = sharedPreferences.getString(ownerEmail, "")
+        phoneOwner.text = sharedPreferences.getString(ownerPhone, "")
 
-        nameStore.text = sharedPreferences.getString(storeKey, "")
-        locationStore.text = sharedPreferences.getString(locationKey, "")
-        money.text = sharedPreferences.getString(moneyKey, "")
+        nameStore.text = sharedPreferences.getString(storeName, "")
+        locationStore.text = sharedPreferences.getString(storeLocation, "")
+        money.text = "ssss"
 
         Glide.with(context)
-                .load(sharedPreferences.getString(imgKey, ""))
+                .load(sharedPreferences.getString(ownerImg, ""))
                 .into(imgCircleImageView)
     }
 }
