@@ -8,13 +8,14 @@ import com.google.firebase.iid.FirebaseInstanceIdService
 
 class MyFirebaseInstanceIDService : FirebaseInstanceIdService() {
 
-    val FIREBASE_TOKEN = "firebase token"
+    val FIREBASE_TOKEN = "token"
     private val TAG = "MyFirebaseIIDService"
 
     override fun onTokenRefresh() {
         // Get updated InstanceID token.
         val refreshedToken = FirebaseInstanceId.getInstance().token
         Toast.makeText(applicationContext,refreshedToken,Toast.LENGTH_SHORT).show()
+        Log.i(FIREBASE_TOKEN,refreshedToken)
 
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the

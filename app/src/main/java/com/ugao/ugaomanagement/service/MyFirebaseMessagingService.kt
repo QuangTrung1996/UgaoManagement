@@ -16,8 +16,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     private val TAG = "MyFireBaseMsgService"
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
-        Log.d(TAG, "From: " + remoteMessage!!.from!!)
-        Log.d(TAG, "Notification Message Body: " + remoteMessage.notification!!.body!!)
+        Log.i(TAG, "From: " + remoteMessage!!.from!!)
+        Log.i(TAG, "Notification Message Body: " + remoteMessage.notification!!.body!!)
+        Log.i(TAG, "Notification Message Title: " + remoteMessage.notification!!.title!!)
+
         sendNotification(remoteMessage.notification!!.body, remoteMessage.notification!!.title)
     }
 

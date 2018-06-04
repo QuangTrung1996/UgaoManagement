@@ -37,6 +37,8 @@ class InvoicePaperAdapterNew : BaseAdapter {
     private var listData: List<Invoice>
     private var context: Context
 
+    var id : String = ""
+
     // doi lai thoi gian
     val df = SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss z", Locale.US)
     val df1 = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.US)
@@ -109,6 +111,9 @@ class InvoicePaperAdapterNew : BaseAdapter {
         holder.messageShipper.setOnClickListener {
             FirebaseMessaging.getInstance().subscribeToTopic("news")
             sendWithOtherThread("topic")
+
+            // lay ma hoa don
+            id = invoice.id
         }
 
         return view
@@ -134,19 +139,12 @@ class InvoicePaperAdapterNew : BaseAdapter {
         val d = 24 * h
 
         return when {
-            number / d in 1..7 -> {
-                " " + number / d + " ngày trước"
-            }
-            number / h >= 1 -> {
-                " " +number / d + " giờ trước"
-            }
-            number / m >= 1 -> {
-                " " +number / d + " phút trước"
-            }
-            number / s >= 1 -> {
-                " " +number / d + " giây trước"
-            }
-            else -> df1.format(date)
+            number / d >= 7     -> " " + df1.format(date)
+            number / d in 1..7  -> " " + number / d + " ngày trước"
+            number / h in 1..24 -> " " + number / h + " giờ trước"
+            number / m in 1..60 -> " " + number / m + " phút trước"
+            number / s in 1..60 -> " " + number / s + " giây trước"
+            else -> "mới đây"
         }
     }
 
@@ -166,13 +164,14 @@ class InvoicePaperAdapterNew : BaseAdapter {
         val jData = JSONObject()
         try {
             jNotification.put("title", "Giao gạo")
-            jNotification.put("body", sharedPreferences.getString(storeName, ""))
+            jNotification.put("body", id)
             jNotification.put("sound", "default")
             jNotification.put("badge", "1")
-            jNotification.put("click_action", "OPEN_ACTIVITY_1")
+//            jNotification.put("click_action", "OPEN_ACTIVITY_1")
             jNotification.put("icon", "ic_notification")
 
-            jData.put("picture", "http://opsbug.com/static/google-io.jpg")
+            jData.put("body", id)
+            jData.put("title", "Giao gạo")
 
             when (type) {
                 "tokens" -> {
@@ -206,9 +205,10 @@ class InvoicePaperAdapterNew : BaseAdapter {
             val resp = convertStreamToString(inputStream)
 
             val h = Handler(Looper.getMainLooper())
-//            h.post({ mTextView.text = resp })
 
-            h.post({ Toast.makeText(context,resp,Toast.LENGTH_SHORT).show() })
+//            h.post({ Toast.makeText(context, "Đã gửi!!!\n$resp",Toast.LENGTH_SHORT).show() })
+            h.post({ Toast.makeText(context, "Đã gửi!!!",Toast.LENGTH_SHORT).show() })
+
 
         } catch (e: JSONException) {
             e.printStackTrace()

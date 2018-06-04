@@ -11,7 +11,6 @@ import android.util.Log
 import android.widget.ListView
 import android.widget.Toast
 import com.ugao.ugaomanagement.R
-import com.ugao.ugaomanagement.adapter.InvoiceAdapter
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.Reader
@@ -19,11 +18,9 @@ import java.net.HttpURLConnection
 import java.net.URL
 import org.json.JSONException
 import org.json.JSONObject
-import android.content.Intent
 import android.content.SharedPreferences
 import android.view.*
 import android.widget.AdapterView.OnItemClickListener
-import com.ugao.ugaomanagement.activity.InvoiceDetailActivity
 import com.ugao.ugaomanagement.adapter.InvoicePaperAdapterNew
 import com.ugao.ugaomanagement.app.Config.myPreference
 import com.ugao.ugaomanagement.app.Config.storeKey
@@ -37,7 +34,10 @@ class InvoiceFragmentNew : Fragment() {
     //    private lateinit var searchView: SearchView
     private val TAG: String = InvoiceFragmentNew::class.java.simpleName
     private var httpInvoiceAsyncTask: HttpInvoiceAsyncTask? = null
+
     val invoiceListNew = ArrayList<Invoice>()
+    val invoiceListDelivered = ArrayList<Invoice>()
+    val invoiceListComplete = ArrayList<Invoice>()
 
     lateinit var sharedPreferences: SharedPreferences
 
@@ -133,18 +133,21 @@ class InvoiceFragmentNew : Fragment() {
                     invoice.price = c.getString("price")
                     invoice.payment_method = c.getString("payment_method")
 
-                    var test = ""
-
-                    try{
+                    val testShipper = try{
                         val shipper = c.getJSONObject("shipper")
-                        test = shipper.getString("name")
-                    }
-                    catch (e: JSONException){
-                        test = ""
+                        shipper.getString("name")
+                    } catch (e: JSONException){
+                        ""
                     }
 
-                    if (test == ""){
+                    if (testShipper == ""){
                         addList(invoiceListNew,invoice)
+                    }
+                    else if (!invoice.paid){
+                        addList(invoiceListDelivered,invoice)
+                    }
+                    else{
+                        addList(invoiceListComplete,invoice)
                     }
                 }
             }
@@ -160,6 +163,9 @@ class InvoiceFragmentNew : Fragment() {
             }
 
             listView.adapter = InvoicePaperAdapterNew(activity!!,invoiceListNew)
+
+            InvoiceFragmentDelivered.invoiceListDelivered = invoiceListDelivered
+            InvoiceFragmentComplete.invoiceListComplete = invoiceListComplete
 
             progressBar.dismiss()
         }
