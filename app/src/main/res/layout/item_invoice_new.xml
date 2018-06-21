@@ -74,7 +74,8 @@
             android:layout_margin="5dp"
             android:text="Thông báo Shipper"
             android:inputType="textFilter"
-            tools:ignore="TextViewEdits" />
+            tools:ignore="TextViewEdits"
+            android:background="@drawable/button_notification"/>
 
         <Button
             android:id="@+id/btn_detail_invoice"
@@ -84,7 +85,8 @@
             android:layout_margin="5dp"
             android:text="Chi tiết hóa đơn"
             android:inputType="textFilter"
-            tools:ignore="TextViewEdits" />
+            tools:ignore="TextViewEdits"
+            android:background="@drawable/button_detail_invoice" />
 
     </LinearLayout>
 

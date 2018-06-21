@@ -13,10 +13,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import android.widget.Toast
 import com.ugao.ugaomanagement.R
 import com.ugao.ugaomanagement.adapter.StorageAdapter
 import com.ugao.ugaomanagement.app.Config.myPreference
 import com.ugao.ugaomanagement.app.Config.storeKey
+import com.ugao.ugaomanagement.internet.CheckInternet
+import com.ugao.ugaomanagement.internet.CheckInternetInterface
 import com.ugao.ugaomanagement.model.Storage
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -25,7 +28,9 @@ import java.io.Reader
 import java.net.HttpURLConnection
 import java.net.URL
 
-class StorageFragment : Fragment() {
+class StorageFragment : Fragment(), CheckInternetInterface {
+
+    var isConnected = true
 
     lateinit var listView : ListView
     val storageProductList = ArrayList<Storage>()
@@ -43,8 +48,12 @@ class StorageFragment : Fragment() {
 
         listView = v.findViewById(R.id.list_storage_product)
 
-        httpStorageAsyncTask = HttpStorageAsyncTask()
-        httpStorageAsyncTask!!.execute(https + sharedPreferences.getString(storeKey, "") + query)
+        val checkInternet = CheckInternet(this)
+        checkInternet.checkConnection(activity!!)
+        if (isConnected) {
+            httpStorageAsyncTask = HttpStorageAsyncTask()
+            httpStorageAsyncTask!!.execute(https + sharedPreferences.getString(storeKey, "") + query)
+        }
 
         return v
     }
@@ -60,7 +69,7 @@ class StorageFragment : Fragment() {
 
             progressBar.setCancelable(false)
             progressBar.setMessage("Getting data...")
-            progressBar.setProgressStyle(STYLE_HORIZONTAL)
+            progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER)
             progressBar.isIndeterminate = true
             progressBar.show()
         }
@@ -139,6 +148,18 @@ class StorageFragment : Fragment() {
             listView.adapter = StorageAdapter(activity!!,storageProductList)
 
             progressBar.dismiss()
+        }
+    }
+
+    override fun checkInternet(isConnected: Boolean) {
+        this.isConnected = isConnected
+        showToast(isConnected)
+    }
+
+    // Showing the status in Toast
+    private fun showToast(isConnected : Boolean) {
+        if (!isConnected) {
+            Toast.makeText(activity,"Sorry! Not connected to internet",Toast.LENGTH_LONG).show()
         }
     }
 }

@@ -20,16 +20,19 @@ import org.json.JSONException
 import org.json.JSONObject
 import android.content.SharedPreferences
 import android.view.*
-import android.widget.AdapterView.OnItemClickListener
 import com.ugao.ugaomanagement.adapter.InvoicePaperAdapterNew
 import com.ugao.ugaomanagement.app.Config.myPreference
 import com.ugao.ugaomanagement.app.Config.storeKey
+import com.ugao.ugaomanagement.internet.CheckInternet
+import com.ugao.ugaomanagement.internet.CheckInternetInterface
 import com.ugao.ugaomanagement.model.Invoice
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class InvoiceFragmentNew : Fragment() {
+class InvoiceFragmentNew : Fragment(), CheckInternetInterface {
+
+    var isConnected = true
 
     //    private lateinit var searchView: SearchView
     private val TAG: String = InvoiceFragmentNew::class.java.simpleName
@@ -42,7 +45,7 @@ class InvoiceFragmentNew : Fragment() {
     lateinit var sharedPreferences: SharedPreferences
 
     var https = "https://gentle-dawn-11577.herokuapp.com/graphql?query={store(id:%22"
-    var query = "%22){invoices{_id,order_date,paid,price,payment_method,shipper{name,token}}}}"
+    var query = "%22){invoices{_id,order_date,paid,price,payment_method,shipper{name}}}}"
 
     private lateinit var listView : ListView
 
@@ -53,11 +56,11 @@ class InvoiceFragmentNew : Fragment() {
 
         sharedPreferences = activity!!.getSharedPreferences(myPreference, Context.MODE_PRIVATE)
 
-        httpInvoiceAsyncTask = HttpInvoiceAsyncTask()
-        httpInvoiceAsyncTask!!.execute(https + sharedPreferences.getString(storeKey, "") + query)
-
-        listView.onItemClickListener = OnItemClickListener { parent, view, position, id ->
-
+        val checkInternet = CheckInternet(this)
+        checkInternet.checkConnection(activity!!)
+        if (isConnected) {
+            httpInvoiceAsyncTask = HttpInvoiceAsyncTask()
+            httpInvoiceAsyncTask!!.execute(https + sharedPreferences.getString(storeKey, "") + query)
         }
 
         return roof
@@ -199,6 +202,18 @@ class InvoiceFragmentNew : Fragment() {
         } catch (e: ParseException) {
             e.printStackTrace()
             return -1;
+        }
+    }
+
+    override fun checkInternet(isConnected: Boolean) {
+        this.isConnected = isConnected
+        showToast(isConnected)
+    }
+
+    // Showing the status in Toast
+    private fun showToast(isConnected : Boolean) {
+        if (!isConnected) {
+            Toast.makeText(activity,"Sorry! Not connected to internet",Toast.LENGTH_LONG).show()
         }
     }
 }

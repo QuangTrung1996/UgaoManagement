@@ -139,12 +139,14 @@ class InvoicePaperAdapterNew : BaseAdapter {
         val d = 24 * h
 
         return when {
-            number / d >= 7     -> " " + df1.format(date)
+//            number / d in 22..27 -> " 3 tuần trước"
+//            number / d in 15..21 -> " 2 tuần trước"
+//            number / d in 8..14 -> " 1 tuần trước"
             number / d in 1..7  -> " " + number / d + " ngày trước"
             number / h in 1..24 -> " " + number / h + " giờ trước"
             number / m in 1..60 -> " " + number / m + " phút trước"
             number / s in 1..60 -> " " + number / s + " giây trước"
-            else -> "mới đây"
+            else -> " " + df1.format(date)
         }
     }
 
@@ -163,15 +165,17 @@ class InvoicePaperAdapterNew : BaseAdapter {
         val jNotification = JSONObject()
         val jData = JSONObject()
         try {
-            jNotification.put("title", "Giao gạo")
-            jNotification.put("body", id)
+            jNotification.put("title", id)
+            jNotification.put("body", "Đơn hàng mới")
             jNotification.put("sound", "default")
             jNotification.put("badge", "1")
 //            jNotification.put("click_action", "OPEN_ACTIVITY_1")
             jNotification.put("icon", "ic_notification")
 
-            jData.put("body", id)
-            jData.put("title", "Giao gạo")
+            jData.put("title", id)
+            jData.put("body", "Đơn hàng mới")
+
+//            jData.put("title", "Giao gạo")
 
             when (type) {
                 "tokens" -> {

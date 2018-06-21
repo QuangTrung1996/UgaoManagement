@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradientbackground">
+    android:background="#00B0F0">
 
     <LinearLayout
         android:id="@+id/progressBar_form"
@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Username"
-            android:background="#3761f7"
+            android:background="#01bbff"
             android:layout_marginTop="40dp">
 
             <EditText
@@ -61,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
-            android:background="#3761f7"
+            android:background="#01bbff"
             android:layout_marginTop="5dp">
 
             <EditText
@@ -85,7 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_gravity="center"
-            android:background="@android:color/holo_blue_light"
+            android:background="@drawable/button_login"
             android:text="Sign In"
             android:textColor="@android:color/white"
             tools:ignore="RtlHardcoded" />

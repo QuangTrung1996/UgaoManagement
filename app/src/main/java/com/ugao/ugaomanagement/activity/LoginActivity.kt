@@ -19,15 +19,9 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.util.Log
 import android.widget.Toast
-import com.ugao.ugaomanagement.app.Config.myPreference
-import com.ugao.ugaomanagement.app.Config.ownerEmail
-import com.ugao.ugaomanagement.app.Config.ownerId
-import com.ugao.ugaomanagement.app.Config.ownerImg
-import com.ugao.ugaomanagement.app.Config.ownerName
-import com.ugao.ugaomanagement.app.Config.ownerPhone
-import com.ugao.ugaomanagement.app.Config.storeKey
-import com.ugao.ugaomanagement.app.Config.storeLocation
-import com.ugao.ugaomanagement.app.Config.storeName
+import com.ugao.ugaomanagement.app.Config
+import com.ugao.ugaomanagement.internet.CheckInternet
+import com.ugao.ugaomanagement.internet.CheckInternetInterface
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -36,14 +30,14 @@ import java.io.Reader
 import java.net.HttpURLConnection
 import java.net.URL
 
-class LoginActivity : AppCompatActivity() {
+@Suppress("UNREACHABLE_CODE")
+class LoginActivity : AppCompatActivity(), CheckInternetInterface {
 
+    private var isConnected = true
     private var mAuthTask: UserLoginTask? = null
-
-    lateinit var sharedPreferences: SharedPreferences
-
-    val https = "https://gentle-dawn-11577.herokuapp.com/graphql?query={"
-    val query = "{_id, email, name, phone, img, store {_id, name, location {address}}}}"
+    private lateinit var sharedPreferences: SharedPreferences
+    private val https = "https://gentle-dawn-11577.herokuapp.com/graphql?query={"
+    private val query = "{_id, email, name, phone, img, store {_id, name, location {address}}}}"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +49,13 @@ class LoginActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_login)
 
-        sign_in_button.setOnClickListener { attemptLogin() }
+        sign_in_button.setOnClickListener {
+            val checkInternet = CheckInternet(this)
+            checkInternet.checkConnection(this)
+            if (isConnected) {
+                attemptLogin()
+            }
+        }
     }
 
     private fun attemptLogin() {
@@ -108,9 +108,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun authenticatedOwner(usernameStr: String, passwordStr: String): String? {
-        return "authenticatedOwner(email:%22" + usernameStr + "%22,pass:%22" +passwordStr + "%22)"
+        return "authenticatedOwner(email:%22$usernameStr%22,pass:%22$passwordStr%22)"
     }
-
 
     private fun isUsernameValid(usernameStr: String): Boolean {
         return usernameStr.length > 4
@@ -130,7 +129,7 @@ class LoginActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
 
-            login_form.visibility = if (show) View.GONE else View.VISIBLE
+//            login_form.visibility = if (show) View.GONE else View.VISIBLE
             login_form.animate()
                     .setDuration(shortAnimTime)
                     .alpha((if (show) 0 else 1).toFloat())
@@ -182,7 +181,7 @@ class LoginActivity : AppCompatActivity() {
                         content.append(line)
                     }
 
-                }while (line != null)
+                }while (true)
                 bufferReader.close()
 
             }catch (e:Exception){
@@ -205,20 +204,18 @@ class LoginActivity : AppCompatActivity() {
                 val location = store.getJSONObject("location")
 
 
-                sharedPreferences = getSharedPreferences(myPreference, Context.MODE_PRIVATE)
+                sharedPreferences = getSharedPreferences(Config.myPreference, Context.MODE_PRIVATE)
                 val editor = sharedPreferences.edit()
-                editor.putString(ownerId, owner.getString("_id"))
-                editor.putString(ownerEmail, owner.getString("email"))
-                editor.putString(ownerName, owner.getString("name"))
-                editor.putString(ownerPhone, owner.getString("phone"))
-                editor.putString(ownerImg, owner.getString("img"))
+                editor.putString(Config.ownerId, owner.getString("_id"))
+                editor.putString(Config.ownerEmail, owner.getString("email"))
+                editor.putString(Config.ownerName, owner.getString("name"))
+                editor.putString(Config.ownerPhone, owner.getString("phone"))
+                editor.putString(Config.ownerImg, owner.getString("img"))
 
-                editor.putString(storeName, store.getString("name"))
-                editor.putString(storeKey, store.getString("_id"))
-                editor.putString(storeLocation, location.getString("address"))
+                editor.putString(Config.storeName, store.getString("name"))
+                editor.putString(Config.storeKey, store.getString("_id"))
+                editor.putString(Config.storeLocation, location.getString("address"))
                 editor.apply()
-
-                Toast.makeText(this@LoginActivity, store.getString("_id"), Toast.LENGTH_LONG).show()
 
                 startActivity(intent)
                 finish()
@@ -237,4 +234,15 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    override fun checkInternet(isConnected: Boolean) {
+        this.isConnected = isConnected
+        showToast(isConnected)
+    }
+
+    // Showing the status in Toast
+    private fun showToast(isConnected : Boolean) {
+        if (!isConnected) {
+            Toast.makeText(this,"Sorry! Not connected to internet",Toast.LENGTH_LONG).show()
+        }
+    }
 }

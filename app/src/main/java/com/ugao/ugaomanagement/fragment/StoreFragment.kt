@@ -12,7 +12,6 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.ugao.ugaomanagement.R
 import de.hdodenhof.circleimageview.CircleImageView
-import android.R.id.edit
 import android.content.Intent
 import com.ugao.ugaomanagement.activity.LoginActivity
 import com.ugao.ugaomanagement.app.Config.myPreference
@@ -23,19 +22,18 @@ import com.ugao.ugaomanagement.app.Config.ownerPhone
 import com.ugao.ugaomanagement.app.Config.storeLocation
 import com.ugao.ugaomanagement.app.Config.storeName
 
-
 class StoreFragment: Fragment() {
 
-    lateinit var sharedPreferences: SharedPreferences
+    private lateinit var sharedPreferences: SharedPreferences
 
-    lateinit var imgCircleImageView : CircleImageView
-    lateinit var nameOwner : TextView
-    lateinit var emailOwner : TextView
-    lateinit var phoneOwner : TextView
-    lateinit var nameStore : TextView
-    lateinit var locationStore : TextView
-    lateinit var money : TextView
-    lateinit var btnLogout : Button
+    private lateinit var imgCircleImageView : CircleImageView
+    private lateinit var nameOwner : TextView
+    private lateinit var emailOwner : TextView
+    private lateinit var phoneOwner : TextView
+    private lateinit var nameStore : TextView
+    private lateinit var locationStore : TextView
+//    private lateinit var money : TextView
+    private lateinit var btnLogout : Button
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val roof = inflater.inflate(R.layout.fragment_store, container, false)
@@ -49,7 +47,7 @@ class StoreFragment: Fragment() {
             editor.clear()
             editor.apply()
 
-            val intent: Intent = Intent(activity, LoginActivity::class.java)
+            val intent = Intent(activity, LoginActivity::class.java)
             startActivity(intent)
             activity!!.finish()
         }
@@ -67,12 +65,13 @@ class StoreFragment: Fragment() {
         nameStore   = view.findViewById(R.id.txt_name_store)
         locationStore   = view.findViewById(R.id.txt_location_store)
 
-        money   = view.findViewById(R.id.txt_money_store)
+//        money   = view.findViewById(R.id.txt_money_store)
 
         btnLogout = view.findViewById(R.id.btn_logout)
     }
 
     private fun getTextSharedPreferences() {
+        sharedPreferences = activity!!.getSharedPreferences(myPreference, Context.MODE_PRIVATE)
         sharedPreferences = activity!!.getSharedPreferences(myPreference, Context.MODE_PRIVATE)
 
         nameOwner.text = sharedPreferences.getString(ownerName, "")
@@ -81,7 +80,7 @@ class StoreFragment: Fragment() {
 
         nameStore.text = sharedPreferences.getString(storeName, "")
         locationStore.text = sharedPreferences.getString(storeLocation, "")
-        money.text = "ssss"
+//        money.text = "ssss"
 
         Glide.with(context)
                 .load(sharedPreferences.getString(ownerImg, ""))

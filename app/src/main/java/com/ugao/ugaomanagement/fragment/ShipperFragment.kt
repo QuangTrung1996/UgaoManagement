@@ -17,6 +17,8 @@ import com.ugao.ugaomanagement.R
 import com.ugao.ugaomanagement.adapter.ShipperAdapter
 import com.ugao.ugaomanagement.app.Config.myPreference
 import com.ugao.ugaomanagement.app.Config.storeKey
+import com.ugao.ugaomanagement.internet.CheckInternet
+import com.ugao.ugaomanagement.internet.CheckInternetInterface
 import com.ugao.ugaomanagement.model.Shipper
 import org.json.JSONException
 import org.json.JSONObject
@@ -26,7 +28,9 @@ import java.io.Reader
 import java.net.HttpURLConnection
 import java.net.URL
 
-class ShipperFragment  : Fragment() {
+class ShipperFragment  : Fragment(), CheckInternetInterface {
+
+    var isConnected = true
 
     private lateinit var listView : ListView
     private var httpShipperAsyncTask: HttpShipperAsyncTask? = null
@@ -44,8 +48,13 @@ class ShipperFragment  : Fragment() {
 
         sharedPreferences = activity!!.getSharedPreferences(myPreference, Context.MODE_PRIVATE)
 
-        httpShipperAsyncTask = HttpShipperAsyncTask()
-        httpShipperAsyncTask!!.execute(https + sharedPreferences.getString(storeKey, "") + query)
+        val checkInternet = CheckInternet(this)
+        checkInternet.checkConnection(activity!!)
+        if (isConnected) {
+            httpShipperAsyncTask = HttpShipperAsyncTask()
+            httpShipperAsyncTask!!.execute(https + sharedPreferences.getString(storeKey, "") + query)
+        }
+
         return v
     }
 
@@ -136,6 +145,18 @@ class ShipperFragment  : Fragment() {
             listView.adapter = ShipperAdapter(activity!!,shipperList)
 
             progressBar.dismiss()
+        }
+    }
+
+    override fun checkInternet(isConnected: Boolean) {
+        this.isConnected = isConnected
+        showToast(isConnected)
+    }
+
+    // Showing the status in Toast
+    private fun showToast(isConnected : Boolean) {
+        if (!isConnected) {
+            Toast.makeText(activity,"Sorry! Not connected to internet",Toast.LENGTH_LONG).show()
         }
     }
 }

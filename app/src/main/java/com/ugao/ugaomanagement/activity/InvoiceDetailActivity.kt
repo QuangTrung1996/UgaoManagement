@@ -108,7 +108,7 @@ class InvoiceDetailActivity : AppCompatActivity() {
 
             progressBar.setCancelable(false)
             progressBar.setMessage("Getting data...")
-            progressBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
+            progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER)
             progressBar.isIndeterminate = true
             progressBar.show()
         }
