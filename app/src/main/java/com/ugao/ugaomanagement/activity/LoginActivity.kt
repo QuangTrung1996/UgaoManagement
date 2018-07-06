@@ -19,7 +19,9 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.util.Log
 import android.widget.Toast
+import com.google.firebase.iid.FirebaseInstanceId
 import com.ugao.ugaomanagement.app.Config
+import com.ugao.ugaomanagement.app.OwnerUpdate
 import com.ugao.ugaomanagement.internet.CheckInternet
 import com.ugao.ugaomanagement.internet.CheckInternetInterface
 import org.json.JSONException
@@ -32,6 +34,12 @@ import java.net.URL
 
 @Suppress("UNREACHABLE_CODE")
 class LoginActivity : AppCompatActivity(), CheckInternetInterface {
+
+    private val defaultUsernameValue = ""
+    private var usernameValue: String? = null
+
+    private val defaultPasswordValue = ""
+    private var passwordValue: String? = null
 
     private var isConnected = true
     private var mAuthTask: UserLoginTask? = null
@@ -218,13 +226,16 @@ class LoginActivity : AppCompatActivity(), CheckInternetInterface {
                 editor.apply()
 
                 startActivity(intent)
+
+                savePreferences()
+
+                pushToken()
+
                 finish()
             }
             catch (e: JSONException) {
-                Toast.makeText(this@LoginActivity,
-                        "Json parsing error: " + e.message,
-                        Toast.LENGTH_LONG)
-                        .show()
+//                Toast.makeText(this@LoginActivity, "Json parsing error: " + e.message, Toast.LENGTH_LONG).show()
+                Toast.makeText(this@LoginActivity, "Không đúng tên hoặc mật khẩu", Toast.LENGTH_LONG).show()
             }
         }
 
@@ -237,6 +248,47 @@ class LoginActivity : AppCompatActivity(), CheckInternetInterface {
     override fun checkInternet(isConnected: Boolean) {
         this.isConnected = isConnected
         showToast(isConnected)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        savePreferences()
+    }
+
+    private fun savePreferences() {
+        val settings = getSharedPreferences(Config.PREF_LOGIN, Context.MODE_PRIVATE)
+        val editor = settings.edit()
+
+        // Edit and commit
+        usernameValue = username.text.toString()
+        passwordValue = password.text.toString()
+
+        editor.putString(Config.PREF_UNAME, usernameValue)
+        editor.putString(Config.PREF_PASSWORD, passwordValue)
+        editor.apply()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadPreferences()
+    }
+
+    private fun loadPreferences() {
+
+        val settings = getSharedPreferences(Config.PREF_LOGIN, Context.MODE_PRIVATE)
+
+        // Get value
+        usernameValue = settings.getString(Config.PREF_UNAME, defaultUsernameValue)
+        passwordValue = settings.getString(Config.PREF_PASSWORD, defaultPasswordValue)
+        username.setText(usernameValue)
+        password.setText(passwordValue)
+    }
+
+    private fun pushToken() {
+        val push = OwnerUpdate()
+        push.postToken = FirebaseInstanceId.getInstance().token!!
+        push.id = sharedPreferences.getString(Config.ownerId, "")
+        push.pushUpdate("token")
     }
 
     // Showing the status in Toast

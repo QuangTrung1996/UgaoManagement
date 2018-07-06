@@ -32,7 +32,7 @@ import java.util.*
 
 class InvoiceFragmentNew : Fragment(), CheckInternetInterface {
 
-    var isConnected = true
+    private var isConnected = true
 
     //    private lateinit var searchView: SearchView
     private val TAG: String = InvoiceFragmentNew::class.java.simpleName
@@ -45,7 +45,7 @@ class InvoiceFragmentNew : Fragment(), CheckInternetInterface {
     lateinit var sharedPreferences: SharedPreferences
 
     var https = "https://gentle-dawn-11577.herokuapp.com/graphql?query={store(id:%22"
-    var query = "%22){invoices{_id,order_date,paid,price,payment_method,shipper{name}}}}"
+    var query = "%22){invoices{_id,order_date,paid,price,payment_method,shipper{name},tasks{receipt_date}}}}"
 
     private lateinit var listView : ListView
 
@@ -53,6 +53,10 @@ class InvoiceFragmentNew : Fragment(), CheckInternetInterface {
         val roof = inflater.inflate(R.layout.fragment_invoice_list, container, false)
 
         listView = roof.findViewById(R.id.lv_invoice)
+
+        invoiceListNew.clear()
+        invoiceListDelivered.clear()
+        invoiceListComplete.clear()
 
         sharedPreferences = activity!!.getSharedPreferences(myPreference, Context.MODE_PRIVATE)
 
@@ -131,38 +135,40 @@ class InvoiceFragmentNew : Fragment(), CheckInternetInterface {
                     val invoice = Invoice()
 
                     invoice.id = c.getString("_id")
-                    invoice.order_date = c.getString("order_date")
+                    invoice.orderDate = c.getString("order_date")
                     invoice.paid = c.getString("paid")!!.toBoolean()
                     invoice.price = c.getString("price")
-                    invoice.payment_method = c.getString("payment_method")
+                    invoice.paymentMethod = c.getString("payment_method")
 
-                    val testShipper = try{
+                    val nameShipper = try{
                         val shipper = c.getJSONObject("shipper")
                         shipper.getString("name")
                     } catch (e: JSONException){
                         ""
                     }
 
-                    if (testShipper == ""){
+                    if (nameShipper == ""){
                         addList(invoiceListNew,invoice)
                     }
                     else if (!invoice.paid){
                         addList(invoiceListDelivered,invoice)
                     }
-                    else{
+                    else {
+                        try{
+                            val tasks = c.getJSONObject("tasks")
+                            invoice.orderDate = tasks.getString("receipt_date")
+                        } catch (e: JSONException){
+
+                        }
                         addList(invoiceListComplete,invoice)
                     }
                 }
             }
             catch (e: JSONException) {
                 Log.e(TAG, "Json parsing error: " + e.message)
-                activity!!.runOnUiThread( {
-                    Toast.makeText(activity,
-                            "Json parsing error: " + e.message,
-                            Toast.LENGTH_LONG)
-                            .show()
-                })
-
+                activity!!.runOnUiThread {
+                    Toast.makeText(activity, "Lỗi Json.", Toast.LENGTH_LONG).show()
+                }
             }
 
             listView.adapter = InvoicePaperAdapterNew(activity!!,invoiceListNew)
@@ -179,8 +185,8 @@ class InvoiceFragmentNew : Fragment(), CheckInternetInterface {
             //1st item, add it on loc=0
             list.add(invoice)
         }else{
-            val time = getTimeLong(invoice.order_date)
-            if(time > getTimeLong(list[list.size-1].order_date)){
+            val time = getTimeLong(invoice.orderDate)
+            if(time > getTimeLong(list[list.size-1].orderDate)){
                 list.add(0,invoice)
             }else{
                 list.add(invoice)

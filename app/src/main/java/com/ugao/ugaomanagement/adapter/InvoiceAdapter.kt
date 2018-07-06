@@ -68,7 +68,7 @@ class InvoiceAdapter : BaseAdapter {
         }
 
         df.timeZone = TimeZone.getTimeZone("GMT+0000 (UTC)")
-        val date = df.parse(invoice.order_date)
+        val date = df.parse(invoice.orderDate)
         holder.txt_order_date.text = testTime(date)
 
         holder.txt_price.text = invoice.price + ".000 Đ"
@@ -93,19 +93,14 @@ class InvoiceAdapter : BaseAdapter {
         val d = 24 * h
 
         return when {
-            number / d in 1..7 -> {
-                " " + number / d + " ngày trước"
-            }
-            number / h >= 1 -> {
-                " " +number / d + " giờ trước"
-            }
-            number / m >= 1 -> {
-                " " +number / d + " phút trước"
-            }
-            number / s >= 1 -> {
-                " " +number / d + " giây trước"
-            }
-            else -> df1.format(date)
+//            number / d in 22..27 -> " 3 tuần trước"
+//            number / d in 15..21 -> " 2 tuần trước"
+//            number / d in 8..14 -> " 1 tuần trước"
+            number / d in 1..7  -> " " + number / d + " ngày trước"
+            number / h in 1..24 -> " " + number / h + " giờ trước"
+            number / m in 1..60 -> " " + number / m + " phút trước"
+            number / s in 1..60 -> " " + number / s + " giây trước"
+            else -> " " + df1.format(date)
         }
     }
 }

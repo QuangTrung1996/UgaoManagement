@@ -31,89 +31,90 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Blanca Bechtelar"
+                android:text="tên chủ cửa hàng"
                 android:gravity="center"
                 android:textColor="#fff"
                 android:textStyle="bold"
                 android:textSize="21sp"/>
+
         </LinearLayout>
+
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="170dp">
-            <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:orientation="horizontal"-->
-                <!--android:weightSum="3">-->
-                <!--<LinearLayout-->
-                    <!--android:gravity="center"-->
-                    <!--android:orientation="vertical"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:layout_height="match_parent">-->
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="Photos"-->
-                        <!--android:textSize="20sp"-->
-                        <!--/>-->
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="125"-->
-                        <!--android:textStyle="bold"-->
-                        <!--android:textSize="20sp"-->
-                        <!--android:paddingTop="10dp"-->
-                        <!--android:textColor="@color/startblue"/>-->
 
-                <!--</LinearLayout>-->
-                <!--<LinearLayout-->
-                    <!--android:gravity="center"-->
-                    <!--android:orientation="vertical"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:layout_height="match_parent">-->
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="Followers"-->
-                        <!--android:textSize="20sp"-->
-                        <!--/>-->
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="1205"-->
-                        <!--android:textStyle="bold"-->
-                        <!--android:textSize="20sp"-->
-                        <!--android:paddingTop="10dp"-->
-                        <!--android:textColor="@color/startblue"/>-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="3">
 
-                <!--</LinearLayout>-->
-                <!--<LinearLayout-->
-                    <!--android:gravity="center"-->
-                    <!--android:orientation="vertical"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:layout_height="match_parent">-->
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="Following"-->
-                        <!--android:textSize="20sp"-->
-                        <!--/>-->
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="360"-->
-                        <!--android:textStyle="bold"-->
-                        <!--android:textSize="20sp"-->
-                        <!--android:paddingTop="10dp"-->
-                        <!--android:textColor="@color/startblue"/>-->
+                <LinearLayout
+                    android:id="@+id/ll_change_information"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
 
-                <!--</LinearLayout>-->
-            <!--</LinearLayout>-->
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_edit"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đổi thông tin"
+                        android:paddingTop="10dp"
+                        android:textColor="@android:color/black"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_change_image"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_image"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đổi hình đại diện"
+                        android:paddingTop="10dp"
+                        android:textColor="@android:color/black"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_change_password"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_pass"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đổi mật khẩu"
+                        android:paddingTop="10dp"
+                        android:textColor="@android:color/black"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </android.support.v7.widget.CardView>
     </RelativeLayout>

@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
@@ -20,7 +21,6 @@ import com.ugao.ugaomanagement.R
 import com.ugao.ugaomanagement.activity.InvoiceDetailActivity
 import com.ugao.ugaomanagement.app.Config.AUTH_KEY
 import com.ugao.ugaomanagement.app.Config.myPreference
-import com.ugao.ugaomanagement.app.Config.storeName
 import com.ugao.ugaomanagement.model.Invoice
 import org.json.JSONArray
 import org.json.JSONException
@@ -32,21 +32,13 @@ import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 
-class InvoicePaperAdapterNew : BaseAdapter {
-
-    private var listData: List<Invoice>
-    private var context: Context
+class InvoicePaperAdapterNew(private var context: Context, private var listData: List<Invoice>) : BaseAdapter() {
 
     var id : String = ""
 
     // doi lai thoi gian
-    val df = SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss z", Locale.US)
-    val df1 = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.US)
-
-    constructor(context: Context, listData: List<Invoice>) : super() {
-        this.listData = listData
-        this.context = context
-    }
+    private val df = SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss z", Locale.US)
+    private val df1 = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.US)
 
     override fun getItem(position: Int): Any {
         return listData[position]
@@ -79,25 +71,27 @@ class InvoicePaperAdapterNew : BaseAdapter {
         holder.id.text = invoice.id
 
         if (invoice.paid){
-            holder.txt_paid.text = "ĐÃ THANH TOÁN"
-            holder.txt_paid.setTextColor(Color.parseColor("#FF2873E4"))
+            holder.txtPaid.text = "ĐÃ THANH TOÁN"
+            holder.txtPaid.setTextColor(Color.parseColor("#FF2873E4"))
         }
         else {
-            holder.txt_paid.text = "CHƯA THANH TOÁN"
-            holder.txt_paid.setTextColor(Color.parseColor("#FFFF000D"))
+            holder.txtPaid.text = "CHƯA THANH TOÁN"
+            holder.txtPaid.setTextColor(Color.parseColor("#FFFF000D"))
         }
 
         df.timeZone = TimeZone.getTimeZone("GMT+0000 (UTC)")
-        val date = df.parse(invoice.order_date)
+        val date = df.parse(invoice.orderDate)
 
-        holder.txt_order_date.text = testTime(date) //df1.format(date)
+        holder.txtOrderDate.text = testTime(date) //df1.format(date)
 
-        holder.txt_price.text = invoice.price + ".000 Đ"
+        holder.txtPrice.text = invoice.price + ".000 Đ"
+
+        Log.i("AAA",(invoice.price.toFloat() * 1000).toString())
 
         holder.detailInvoice.setOnClickListener {
             val intent = Intent(context, InvoiceDetailActivity::class.java)
             intent.putExtra("message", invoice.id)
-            intent.putExtra("message_order_date", invoice.order_date)
+            intent.putExtra("message_order_date", invoice.orderDate)
             if (invoice.paid){
                 intent.putExtra("message_paid", "true")
             }
@@ -121,9 +115,9 @@ class InvoicePaperAdapterNew : BaseAdapter {
 
     class ViewHolder (view : View){
         var id : TextView = view.findViewById(R.id.txt_id)
-        var txt_paid: TextView = view.findViewById(R.id.txt_paid)
-        var txt_order_date: TextView = view.findViewById(R.id.txt_order_date)
-        var txt_price: TextView = view.findViewById(R.id.txt_price)
+        var txtPaid: TextView = view.findViewById(R.id.txt_paid)
+        var txtOrderDate: TextView = view.findViewById(R.id.txt_order_date)
+        var txtPrice: TextView = view.findViewById(R.id.txt_price)
 
         var messageShipper: Button = view.findViewById(R.id.btn_message_shipper)
         var detailInvoice : Button = view.findViewById(R.id.btn_detail_invoice)
@@ -154,8 +148,7 @@ class InvoicePaperAdapterNew : BaseAdapter {
         Thread(Runnable { pushNotification(type) }).start()
     }
 
-    lateinit var sharedPreferences: SharedPreferences
-
+    private lateinit var sharedPreferences: SharedPreferences
 
     private fun pushNotification(type: String) {
 
@@ -206,12 +199,11 @@ class InvoicePaperAdapterNew : BaseAdapter {
 
             // Read FCM response.
             val inputStream = conn.inputStream
+            val h = Handler(Looper.getMainLooper())
             val resp = convertStreamToString(inputStream)
 
-            val h = Handler(Looper.getMainLooper())
-
 //            h.post({ Toast.makeText(context, "Đã gửi!!!\n$resp",Toast.LENGTH_SHORT).show() })
-            h.post({ Toast.makeText(context, "Đã gửi!!!",Toast.LENGTH_SHORT).show() })
+            h.post { Toast.makeText(context, "Đã gửi!!!",Toast.LENGTH_SHORT).show() }
 
 
         } catch (e: JSONException) {

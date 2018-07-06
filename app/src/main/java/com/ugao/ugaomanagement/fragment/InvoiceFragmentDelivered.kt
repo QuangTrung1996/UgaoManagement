@@ -38,7 +38,7 @@ class InvoiceFragmentDelivered : Fragment() {
         listView.onItemClickListener = OnItemClickListener { parent, view, position, id ->
             val intent = Intent(activity, InvoiceDetailActivity::class.java)
             intent.putExtra("message", invoiceListDelivered[position].id)
-            intent.putExtra("message_order_date", invoiceListDelivered[position].order_date)
+            intent.putExtra("message_order_date", invoiceListDelivered[position].orderDate)
 
             if (invoiceListDelivered[position].paid){
                 intent.putExtra("message_paid", "true")

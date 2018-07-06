@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -33,21 +34,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.InvoiceDetailActivity"
             android:label="@string/title_activity_invoice_detail" />
         <activity android:name=".activity.MainActivity" />
-
         <activity
             android:name=".activity.LoginActivity"
-            android:label="@string/title_activity_login"/>
-
+            android:label="@string/title_activity_login" />
         <activity
             android:name=".activity.NotificationActivity"
-            android:label="@string/title_activity_notification" >
+            android:label="@string/title_activity_notification">
             <intent-filter>
                 <action android:name="OPEN_ACTIVITY_1" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -65,6 +64,7 @@
         </service>
         <!-- ./Firebase Notifications -->
 
+        <activity android:name=".activity.ShipperAddActivity"></activity>
     </application>
 
 </manifest>

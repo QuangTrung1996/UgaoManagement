@@ -2,8 +2,8 @@ package com.ugao.ugaomanagement.model
 
 class Invoice {
     var id: String = ""
-    var order_date: String = ""
+    var orderDate: String = ""
     var paid: Boolean = false
     var price: String = ""
-    var payment_method: String = ""
+    var paymentMethod: String = ""
 }

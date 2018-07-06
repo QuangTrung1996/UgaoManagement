@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.ugao.ugaomanagement.fragment
 
 import android.annotation.SuppressLint
@@ -27,10 +29,14 @@ import java.io.InputStreamReader
 import java.io.Reader
 import java.net.HttpURLConnection
 import java.net.URL
+import android.content.Intent
+import android.support.design.widget.FloatingActionButton
+import com.ugao.ugaomanagement.activity.ShipperAddActivity
+
 
 class ShipperFragment  : Fragment(), CheckInternetInterface {
 
-    var isConnected = true
+    private var isConnected = true
 
     private lateinit var listView : ListView
     private var httpShipperAsyncTask: HttpShipperAsyncTask? = null
@@ -38,8 +44,8 @@ class ShipperFragment  : Fragment(), CheckInternetInterface {
 
     private lateinit var sharedPreferences: SharedPreferences
 
-    var https = "https://gentle-dawn-11577.herokuapp.com/graphql?query={store(id:%22"
-    var query = "%22){shippers {_id,name,phone,email,img}}}"
+    private var https = "https://gentle-dawn-11577.herokuapp.com/graphql?query={store(id:%22"
+    private var query = "%22){shippers {_id,name,phone,email,img}}}"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_shipper, container, false)
@@ -53,6 +59,15 @@ class ShipperFragment  : Fragment(), CheckInternetInterface {
         if (isConnected) {
             httpShipperAsyncTask = HttpShipperAsyncTask()
             httpShipperAsyncTask!!.execute(https + sharedPreferences.getString(storeKey, "") + query)
+
+
+        }
+
+        val fab = v.findViewById(R.id.fab) as FloatingActionButton
+        fab.setOnClickListener {
+            // Click action
+            val intent = Intent(activity, ShipperAddActivity::class.java)
+            startActivity(intent)
         }
 
         return v
@@ -133,12 +148,12 @@ class ShipperFragment  : Fragment(), CheckInternetInterface {
             }
             catch (e: JSONException) {
 
-                activity!!.runOnUiThread( {
+                activity!!.runOnUiThread {
                     Toast.makeText(activity,
                             "Json parsing error: " + e.message,
                             Toast.LENGTH_LONG)
                             .show()
-                })
+                }
 
             }
 

@@ -79,7 +79,6 @@ class MainActivity : AppCompatActivity() {
         builder.setTitle("Đặc biệt")
         builder.setMessage("Bạn có muốn thoát ứng dụng không?")
         builder.setPositiveButton("OK") { _, _ ->
-
             //if user pressed "OK", then he is allowed to exit from application
             finish()
         }
