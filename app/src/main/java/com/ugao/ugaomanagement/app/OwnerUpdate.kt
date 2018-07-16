@@ -1,14 +1,19 @@
 package com.ugao.ugaomanagement.app
 
+import android.app.ProgressDialog
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import org.json.JSONObject
 import java.io.DataOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
-class OwnerUpdate() {
+class OwnerUpdate {
 
     lateinit var id : String
+
+    private lateinit var progressDialog: ProgressDialog
 
     //  post thong tin thay doi
     lateinit var postNameOwner : String
@@ -17,7 +22,15 @@ class OwnerUpdate() {
     lateinit var postImage : String
     lateinit var postToken : String
 
-    fun pushUpdate(type: String) {
+    var test : String = ""
+
+    fun pushUpdate(type: String, con : Context) {
+
+        progressDialog = ProgressDialog(con)
+        progressDialog.setCancelable(false)
+
+        progressDialog.setMessage("Đang tải lên...")
+        showDialog()
 
         val thread = Thread(Runnable {
             try {
@@ -52,11 +65,24 @@ class OwnerUpdate() {
                 Log.i("MSG", conn.responseMessage)
 
                 conn.disconnect()
+
+                hideDialog()
             } catch (e: Exception) {
                 e.printStackTrace()
+
             }
         })
 
         thread.start()
+    }
+
+    private fun showDialog() {
+        if (!progressDialog.isShowing)
+            progressDialog.show()
+    }
+
+    private fun hideDialog() {
+        if (progressDialog.isShowing)
+            progressDialog.dismiss()
     }
 }

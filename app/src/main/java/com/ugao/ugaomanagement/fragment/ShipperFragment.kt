@@ -59,8 +59,6 @@ class ShipperFragment  : Fragment(), CheckInternetInterface {
         if (isConnected) {
             httpShipperAsyncTask = HttpShipperAsyncTask()
             httpShipperAsyncTask!!.execute(https + sharedPreferences.getString(storeKey, "") + query)
-
-
         }
 
         val fab = v.findViewById(R.id.fab) as FloatingActionButton

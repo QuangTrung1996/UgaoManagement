@@ -56,9 +56,9 @@ class ProductAndQuantityAdapter(private var context: Context, private var listDa
                 .into(holder.thumbnail)
 
         holder.txtNameProduct.text = productAndQuantity.product.name
-        holder.txtPriceProduct.text     = "Đơn giá : "+productAndQuantity.product.price.toString()
-        holder.txtWeightProduct.text    = "Cân nặng: "+productAndQuantity.product.weight.toString() + " kg"
-        holder.txtQuantityProduct.text  = "Số lượng: "+productAndQuantity.quantity.toString()
+        holder.txtPriceProduct.text     = "Đơn giá : " + (productAndQuantity.product.price * 1000).toInt().toString() + " Đ"
+        holder.txtWeightProduct.text    = "Cân nặng: " + productAndQuantity.product.weight.toString() + " kg"
+        holder.txtQuantityProduct.text  = "Số lượng: " + productAndQuantity.quantity.toInt().toString()
 
         return view
     }

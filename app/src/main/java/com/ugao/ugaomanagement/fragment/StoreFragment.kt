@@ -169,7 +169,7 @@ class StoreFragment: Fragment(), CheckInternetInterface {
 
 //                            pushUpdate("pass")
                             push.postPass = postPass
-                            push.pushUpdate("pass")
+                            push.pushUpdate("pass",activity!!)
 
                             val editor = preferencesLogin.edit()
                             editor.putString(Config.PREF_PASSWORD, passNew1.text.toString())
@@ -219,18 +219,15 @@ class StoreFragment: Fragment(), CheckInternetInterface {
             postNameOwner = editOwnerName.text.toString()
             postPhone = editPhone.text.toString()
 
-//            pushUpdate("owner")
             push.postNameOwner = postNameOwner
             push.postPhone = postPhone
-            push.pushUpdate("owner")
+            push.pushUpdate("owner",activity!!)
 
             val editor = sharedPreferences.edit()
             editor.putString(Config.ownerName, editOwnerName.text.toString())
             editor.putString(Config.ownerPhone, editPhone.text.toString())
-//                      editor.putString(Config.storeName, editStoreName.text.toString())
-//                      editor.putString(Config.storeLocation, editStoreAddress.text.toString())
             editor.apply()
-//
+
             getTextSharedPreferences()
         }
 
@@ -305,7 +302,7 @@ class StoreFragment: Fragment(), CheckInternetInterface {
 
 //                        pushUpdate("image")
                         push.postImage = postImage
-                        push.pushUpdate("image")
+                        push.pushUpdate("image",activity!!)
 
                         dialog.dismiss()
                         showToast("Thành công.")

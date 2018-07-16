@@ -31,6 +31,7 @@ import java.io.InputStreamReader
 import java.io.Reader
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.regex.Pattern
 
 @Suppress("UNREACHABLE_CODE")
 class LoginActivity : AppCompatActivity(), CheckInternetInterface {
@@ -45,7 +46,7 @@ class LoginActivity : AppCompatActivity(), CheckInternetInterface {
     private var mAuthTask: UserLoginTask? = null
     private lateinit var sharedPreferences: SharedPreferences
     private val https = "https://gentle-dawn-11577.herokuapp.com/graphql?query={"
-    private val query = "{_id, email, name, phone, img, store {_id, name, location {address}}}}"
+    private val query = "{_id, email, name, phone, img, token, store {_id, name, location {address}}}}"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -119,8 +120,11 @@ class LoginActivity : AppCompatActivity(), CheckInternetInterface {
         return "authenticatedOwner(email:%22$usernameStr%22,pass:%22$passwordStr%22)"
     }
 
-    private fun isUsernameValid(usernameStr: String): Boolean {
-        return usernameStr.length > 4
+    private fun isUsernameValid(email: String): Boolean {
+        val expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$"
+        val pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE)
+        val matcher = pattern.matcher(email)
+        return matcher.matches()
     }
 
     private fun isPasswordValid(passwordStr: String): Boolean {
@@ -229,7 +233,10 @@ class LoginActivity : AppCompatActivity(), CheckInternetInterface {
 
                 savePreferences()
 
-                pushToken()
+//                Log.i("BBB",FirebaseInstanceId.getInstance().token!!)
+                if (FirebaseInstanceId.getInstance().token!! != owner.getString("token")){
+                    pushToken()
+                }
 
                 finish()
             }
@@ -288,7 +295,7 @@ class LoginActivity : AppCompatActivity(), CheckInternetInterface {
         val push = OwnerUpdate()
         push.postToken = FirebaseInstanceId.getInstance().token!!
         push.id = sharedPreferences.getString(Config.ownerId, "")
-        push.pushUpdate("token")
+        push.pushUpdate("token",this@LoginActivity)
     }
 
     // Showing the status in Toast

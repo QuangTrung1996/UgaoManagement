@@ -11,6 +11,7 @@
     <string name="title_activity_invoice_detail">Chi tiết hóa đơn</string>
     <string name="title_activity_login">Đăng nhập</string>
     <string name="title_activity_notification">Thông báo</string>
+    <string name="title_activity_shipper_add">Thêm người giao hàng</string>
 
     <!--invoice-->
     <string name="invoice_total_money">Tổng tiền :</string>
@@ -35,9 +36,13 @@
     <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Đăng nhập</string>
-    <string name="error_invalid_username">Username không hợp lệ</string>
+    <string name="error_invalid_username">Email không hợp lệ</string>
     <string name="error_invalid_password">Mật khẩu không hợp lệ</string>
     <string name="error_incorrect_password">Mật khẩu này không chính xác</string>
     <string name="error_required">Bắt buộc</string>
+
+    <!--Shipper Add Activity-->
+    <string name="error_invalid">Chưa nhập.</string>
+    <string name="error_invalid_pass">Mật khẩu không đúng.</string>
 
 </resources>

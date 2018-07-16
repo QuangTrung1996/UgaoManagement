@@ -1,5 +1,6 @@
 package com.ugao.ugaomanagement.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -34,6 +35,7 @@ class StorageAdapter : BaseAdapter {
         return listData.size
     }
 
+    @SuppressLint("SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view : View
         val holder: ViewHolder
@@ -61,9 +63,9 @@ class StorageAdapter : BaseAdapter {
                 .into(holder.thumbnail)
 
         holder.txtNameProduct.text = product.product.name
-        holder.txtPriceProduct.text = "Đơn giá : "+product.product.price.toString()
-        holder.txtWeightProduct.text = "Cân nặng: "+product.product.weight.toString()
-        holder.txtQuantityProduct.text = "Số lượng: " + product.amount.toString()
+        holder.txtPriceProduct.text = "Đơn giá : " + (product.product.price * 1000).toInt().toString() + " Đ"
+        holder.txtWeightProduct.text = "Cân nặng: " + product.product.weight.toString() + " kg"
+        holder.txtQuantityProduct.text = "Số lượng: " + product.amount.toInt().toString()
 
         return view
     }

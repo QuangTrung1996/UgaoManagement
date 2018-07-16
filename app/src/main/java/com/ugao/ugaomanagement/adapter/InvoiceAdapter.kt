@@ -71,7 +71,7 @@ class InvoiceAdapter : BaseAdapter {
         val date = df.parse(invoice.orderDate)
         holder.txt_order_date.text = testTime(date)
 
-        holder.txt_price.text = invoice.price + ".000 Đ"
+        holder.txt_price.text = (invoice.price.toFloat() * 1000).toInt().toString() + " Đ"
 
         return view
     }

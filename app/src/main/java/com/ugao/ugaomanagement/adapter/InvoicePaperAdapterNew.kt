@@ -84,9 +84,7 @@ class InvoicePaperAdapterNew(private var context: Context, private var listData:
 
         holder.txtOrderDate.text = testTime(date) //df1.format(date)
 
-        holder.txtPrice.text = invoice.price + ".000 Đ"
-
-        Log.i("AAA",(invoice.price.toFloat() * 1000).toString())
+        holder.txtPrice.text = (invoice.price.toFloat() * 1000).toInt().toString() + " Đ"
 
         holder.detailInvoice.setOnClickListener {
             val intent = Intent(context, InvoiceDetailActivity::class.java)
@@ -168,15 +166,13 @@ class InvoicePaperAdapterNew(private var context: Context, private var listData:
             jData.put("title", id)
             jData.put("body", "Đơn hàng mới")
 
-//            jData.put("title", "Giao gạo")
-
             when (type) {
-                "tokens" -> {
-                    val ja = JSONArray()
-                    ja.put("e69hnI7EZDQ:APA91bHPjmWNzF5P0trwlO328esm34SSKedBmtK7VznaFLk-kg9GT2aVkrCcFRZz7GE3vHuk-4TF0xP_8tnW8GojcQ-tnAz7mPXYhI31_7XCR2TILKKx6pr7JbWX3VkTetylj3R4BIzA")
-                    ja.put(FirebaseInstanceId.getInstance().token)
-                    jPayload.put("registration_ids", ja)
-                }
+//                "tokens" -> {
+//                    val ja = JSONArray()
+//                    ja.put("e69hnI7EZDQ:APA91bHPjmWNzF5P0trwlO328esm34SSKedBmtK7VznaFLk-kg9GT2aVkrCcFRZz7GE3vHuk-4TF0xP_8tnW8GojcQ-tnAz7mPXYhI31_7XCR2TILKKx6pr7JbWX3VkTetylj3R4BIzA")
+//                    ja.put(FirebaseInstanceId.getInstance().token)
+//                    jPayload.put("registration_ids", ja)
+//                }
                 "topic" -> jPayload.put("to", "/topics/news")
                 "condition" -> jPayload.put("condition", "'sport' in topics || 'news' in topics")
                 else -> jPayload.put("to", FirebaseInstanceId.getInstance().token)

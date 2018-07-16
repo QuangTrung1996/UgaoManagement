@@ -68,7 +68,7 @@ class InvoiceDetailActivity : AppCompatActivity() {
         txtCustomer  = findViewById(R.id.txt_customer)
         listView     = findViewById(R.id.lv_product)
 
-        txtId.text          = " " + intent.getStringExtra("message")
+        txtId.text   = " " + intent.getStringExtra("message")
 
         // doi lai thoi gian
         val df = SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss z", Locale.US)
@@ -78,7 +78,7 @@ class InvoiceDetailActivity : AppCompatActivity() {
 
         txtOrderDate.text   = df1.format(date)
 
-        txtPrice.text       = " " + intent.getStringExtra("message_price")
+        txtPrice.text       = (intent.getStringExtra("message_price").toFloat() * 1000).toInt().toString() + " Đ"
 
         if (intent.getStringExtra("message_paid")!!.toBoolean()){
             txtPaid.text  = "Đã thanh toán"
