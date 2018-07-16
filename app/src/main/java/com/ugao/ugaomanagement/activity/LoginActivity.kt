@@ -233,7 +233,6 @@ class LoginActivity : AppCompatActivity(), CheckInternetInterface {
 
                 savePreferences()
 
-//                Log.i("BBB",FirebaseInstanceId.getInstance().token!!)
                 if (FirebaseInstanceId.getInstance().token!! != owner.getString("token")){
                     pushToken()
                 }

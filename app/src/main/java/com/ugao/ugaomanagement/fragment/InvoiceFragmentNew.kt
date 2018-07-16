@@ -148,10 +148,12 @@ class InvoiceFragmentNew : Fragment(), CheckInternetInterface {
                     }
 
                     if (nameShipper == ""){
-                        addList(invoiceListNew,invoice)
+//                        addList(invoiceListNew,invoice)
+                        invoiceListNew.add(invoice)
                     }
                     else if (!invoice.paid){
-                        addList(invoiceListDelivered,invoice)
+//                        addList(invoiceListDelivered,invoice)
+                        invoiceListDelivered.add(invoice)
                     }
                     else {
                         try{
@@ -160,7 +162,8 @@ class InvoiceFragmentNew : Fragment(), CheckInternetInterface {
                         } catch (e: JSONException){
 
                         }
-                        addList(invoiceListComplete,invoice)
+//                        addList(invoiceListComplete,invoice)
+                        invoiceListComplete.add(invoice)
                     }
                 }
             }
@@ -186,13 +189,13 @@ class InvoiceFragmentNew : Fragment(), CheckInternetInterface {
             list.add(invoice)
         }else{
             val time = getTimeLong(invoice.orderDate)
-            if(time > getTimeLong(list[list.size-1].orderDate)){
+
+            if(time > getTimeLong(list[0].orderDate)){
                 list.add(0,invoice)
             }else{
                 list.add(invoice)
             }
         }
-
     }
 
     private fun getTimeLong(dateTime: String): Long {

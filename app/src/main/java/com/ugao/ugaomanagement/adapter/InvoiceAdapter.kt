@@ -85,7 +85,7 @@ class InvoiceAdapter : BaseAdapter {
 
     private fun testTime(date : Date) : String{
         val curDate = Date()
-        val number = curDate.time.toInt() - date.time.toInt()
+        val number = curDate.time - date.time
 
         val s = 1000
         val m = 60 * s
@@ -93,9 +93,6 @@ class InvoiceAdapter : BaseAdapter {
         val d = 24 * h
 
         return when {
-//            number / d in 22..27 -> " 3 tuần trước"
-//            number / d in 15..21 -> " 2 tuần trước"
-//            number / d in 8..14 -> " 1 tuần trước"
             number / d in 1..7  -> " " + number / d + " ngày trước"
             number / h in 1..24 -> " " + number / h + " giờ trước"
             number / m in 1..60 -> " " + number / m + " phút trước"
