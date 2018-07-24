@@ -1,12 +1,17 @@
 package com.ugao.ugaomanagement.adapter
 
 import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.support.annotation.RequiresApi
+import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -52,6 +57,7 @@ class InvoicePaperAdapterNew(private var context: Context, private var listData:
         return listData.size
     }
 
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     @SuppressLint("SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view : View
@@ -106,6 +112,25 @@ class InvoicePaperAdapterNew(private var context: Context, private var listData:
 
             // lay ma hoa don
             id = invoice.id
+
+            // hiên dialog
+            val builder = AlertDialog.Builder(context)
+            builder.setCancelable(false)
+            builder.setIcon(R.drawable.logo)
+            builder.setMessage("Bạn đã gửi thông báo tới Shipper.")
+            builder.setPositiveButton("OK") { dialog, _ ->
+                //if user pressed "OK", then he is allowed to exit from application
+                dialog.cancel()
+
+                // thay đổi button
+                holder.messageShipper.text = "Đã thông báo Shipper"
+                holder.messageShipper.background = Drawable.createFromPath("@drawable/button_detail_invoice")
+                holder.messageShipper.isEnabled = false
+            }
+
+            val dialog = builder.create()
+            dialog.window.attributes.windowAnimations = R.style.DialogTheme
+            dialog.show()
         }
 
         return view
@@ -167,12 +192,6 @@ class InvoicePaperAdapterNew(private var context: Context, private var listData:
             jData.put("body", "Đơn hàng mới")
 
             when (type) {
-//                "tokens" -> {
-//                    val ja = JSONArray()
-//                    ja.put("e69hnI7EZDQ:APA91bHPjmWNzF5P0trwlO328esm34SSKedBmtK7VznaFLk-kg9GT2aVkrCcFRZz7GE3vHuk-4TF0xP_8tnW8GojcQ-tnAz7mPXYhI31_7XCR2TILKKx6pr7JbWX3VkTetylj3R4BIzA")
-//                    ja.put(FirebaseInstanceId.getInstance().token)
-//                    jPayload.put("registration_ids", ja)
-//                }
                 "topic" -> jPayload.put("to", "/topics/news")
                 "condition" -> jPayload.put("condition", "'sport' in topics || 'news' in topics")
                 else -> jPayload.put("to", FirebaseInstanceId.getInstance().token)
@@ -198,9 +217,7 @@ class InvoicePaperAdapterNew(private var context: Context, private var listData:
             val h = Handler(Looper.getMainLooper())
             val resp = convertStreamToString(inputStream)
 
-//            h.post({ Toast.makeText(context, "Đã gửi!!!\n$resp",Toast.LENGTH_SHORT).show() })
-            h.post { Toast.makeText(context, "Đã gửi!!!",Toast.LENGTH_SHORT).show() }
-
+//            h.post { Toast.makeText(context, "Đã gửi!!!",Toast.LENGTH_SHORT).show() }
 
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -213,5 +230,20 @@ class InvoicePaperAdapterNew(private var context: Context, private var listData:
     private fun convertStreamToString(`is`: InputStream): String {
         val s = Scanner(`is`).useDelimiter("\\A")
         return if (s.hasNext()) s.next().replace(",", ",\n") else ""
+    }
+
+    private fun showDialog() {
+        val builder = AlertDialog.Builder(context)
+        builder.setCancelable(false)
+        builder.setIcon(R.drawable.logo)
+        builder.setMessage("Bạn đã gửi thông báo tới Shipper.")
+        builder.setPositiveButton("OK") { dialog, _ ->
+            //if user pressed "OK", then he is allowed to exit from application
+            dialog.cancel()
+        }
+
+        val dialog = builder.create()
+        dialog.window.attributes.windowAnimations = R.style.DialogTheme
+        dialog.show()
     }
 }

@@ -22,8 +22,6 @@ class OwnerUpdate {
     lateinit var postImage : String
     lateinit var postToken : String
 
-    var test : String = ""
-
     fun pushUpdate(type: String, con : Context) {
 
         progressDialog = ProgressDialog(con)
